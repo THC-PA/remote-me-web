@@ -2,10 +2,12 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, XhrFactory } from '@angular/common/http';
 import { Job } from '../models/job.model';
 import * as $ from 'jquery';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class StackOverflowService {
-    private baseUrl: string = 'http://stackoverflow.com/jobs/feed?r=true&q=';
+  private corsAnywhere: string = 'https://cors-anywhere.herokuapp.com/';
+    private baseUrl: string = this.corsAnywhere + 'http://stackoverflow.com/jobs/feed?r=true&q=';
 
     constructor(private httpClient: HttpClient) { }
 
@@ -29,12 +31,19 @@ export class StackOverflowService {
 
     search(searchText: string) {
         
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', ['application/json', 'text/plain', '*/*']);
+        const options = { headers };
+        return this.httpClient.get<any>(this.baseUrl + searchText, options)
+            .pipe(map((res: any) => {
+                console.log('**HMMM : ' + JSON.stringify(res.text()));
+            }));
+        //    .subscribe(res => {
+           //     console.log('StackOverflow Results: ' + JSON.stringify(res));
+          //  });
 
-        /*return this.httpClient.get(this.baseUrl + searchText, options)
-            .subscribe(res => {
-                console.log('StackOverflow Results: ' + JSON.stringify(res));
-            });*/
-            let xhr = new XMLHttpRequest();
+
+           /* let xhr = new XMLHttpRequest();
 
             // 2. Configure it: GET-request for the URL /article/.../load
             xhr.open('GET', this.baseUrl);
@@ -47,11 +56,7 @@ export class StackOverflowService {
             xhr.onload = function () {
                 console.log('received response. status: ' + xhr.status
                  + ' statusText: ' + xhr.statusText + ' test: ' + xhr.response);
-                /*if (xhr.status != 200) { // analyze HTTP status of the response
-                    alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
-                } else { // show the result
-                    alert(`Done, got ${xhr.response.length} bytes`); // responseText is the server
-                }*/
+                
             };
     
             xhr.onprogress = function (event) {
@@ -66,6 +71,6 @@ export class StackOverflowService {
             xhr.onerror = function (err) {
                 
                 alert("Request failed: " + JSON.stringify(err));
-            };
+            };*/
     }
 }

@@ -7,6 +7,7 @@ import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { StackOverflowService } from './services/stackoverflow.service';
 import { GitHubService } from './services/github.service';
 import { FormsModule } from '@angular/forms';
+import { FilterService } from './services/filter.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     HttpClientJsonpModule
   ],
-  providers: [StackOverflowService, GitHubService],
+  providers: [StackOverflowService, GitHubService, FilterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

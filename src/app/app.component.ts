@@ -14,9 +14,14 @@ export class AppComponent {
 
   constructor(private stackoverflowService: StackOverflowService, private gitHubService: GitHubService) {}
 
-  search() {
+  search() {  
     if (this.searchText) {
-      this.gitHubService.search(this.searchText);
+      this.stackoverflowService.search(this.searchText).subscribe(res => {
+        console.log('FINAL RES: ' + JSON.stringify(res));
+      })
+       // .subscribe(res=> {
+     //     console.log('***FINAL got res: ' + JSON.stringify(res));
+     //   })
     }
   }
 }
