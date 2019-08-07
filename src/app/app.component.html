@@ -1,22 +1,49 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Welcome to {{ title }}!
+    Remote Me
   </h1>
-  </div>
-<h2>Here are some links to help you start: </h2>
-<input [(ngModel)]="searchText" />
-<button (click)="search()">Search</button>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+  </div> 
+  <br/>
+ 
+    total: {{ (jobs$ | async)?.length || 0 }}
+
+ 
+
+<input matInput type="text" placeholder="Search Text" [(ngModel)]="searchText" />
+<button (click)="search(); searchPanelOpenState=searchPanelOpenState?false:true;" mat-button
+  color="primary">Search</button>
+
+<mat-accordion style="margin-top: 10px; margin-bottom: 10px;"  
+ *ngFor="let job of jobs$ | async">
+    
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>        
+        <div fxLayoutAlign="center center" fxLayout="row">
+            <img style="width: auto; height: 50px; top: 0;left: 0;"
+             [src]="'assets/images/so-icon.png'" /> 
+          
+              <div [ngStyle.xs]="{'font-size': '12px'}">
+                  {{ job.title }}
+              </div>
+          
+        </div>
+          
+      </mat-panel-title>
+     <!-- <mat-panel-description [ngStyle.xs]="{ display: 'none' }" fxLayoutAlign="left center">
+        some info here
+      </mat-panel-description> -->
+    </mat-expansion-panel-header>
+    <mat-card style="background-color: lightgray;">
+      <div [ngStyle.xs]="{'font-size': '12px'}" [innerHTML]="job.description"></div>
+    </mat-card>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<div *ngIf="(jobs$ | async)?.length==0">No records found.</div>
+
+
+
 
 <router-outlet></router-outlet>

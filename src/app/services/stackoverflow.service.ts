@@ -1,15 +1,19 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, XhrFactory } from '@angular/common/http';
+import { tap, map, flatMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Xml2JsonService } from './xml2json.service';
 import { Job } from '../models/job.model';
-import * as $ from 'jquery';
-import { map } from 'rxjs/operators';
+import * as moment from 'moment';
+import { HowToApply } from '../models/how-to-apply.model';
+import { ResultTypes } from '../models/result-types.enum';
+import { from } from 'rxjs';
 
 @Injectable()
 export class StackOverflowService {
   private corsAnywhere: string = 'https://cors-anywhere.herokuapp.com/';
     private baseUrl: string = this.corsAnywhere + 'http://stackoverflow.com/jobs/feed?r=true&q=';
 
-    constructor(private httpClient: HttpClient) { }
+    constructor(private httpClient: HttpClient, private xml2jsonService: Xml2JsonService) { }
 
     /*
     getJSON(xmlText, searchText) {
@@ -29,15 +33,62 @@ export class StackOverflowService {
         })
     }*/
 
-    search(searchText: string) {
+    
+ 
+    toJob(r: any, context: any): Job {      
+       /* let job = <Job>({
+          id: r.guid[0]._.toString(),
+          url: r.link.toString(),
+          title: r.title.toString(),
+          location: r.location,
+          description: context.cleanValue(r.description),
+          created_at: moment(r.pubDate, 'ddd, DD MMM YYYY hh:mm:ss Z').local().toDate(),
+          type: 'none',
+          company: r['a10:author'][0]['a10:name'].toString(),
+          company_url: null,
+          how_to_apply: this.getApplyUrl(r.link.toString()),
+          resultType: ResultTypes.stackOverflow,
+          company_logo: null,
+          result_logo: './assets/images/so-icon.png',
+          isFavorite: false,
+          isIgnored: false,
+          tags: '',//r.category.toString() || '',
+          resultUrl: 'https://stackoverflow.com/jobs'
+        });*/
         
-    let headers = new HttpHeaders();
-    headers = headers.set('Accept', ['application/json', 'text/plain', '*/*']);
-        const options = { headers };
-        return this.httpClient.get<any>(this.baseUrl + searchText, options)
+        //return job;
+
+        return new Job(r.guid[0]._.toString(), r.title.toString(), r.location, 
+            'none',  r['a10:author'][0]['a10:name'].toString(), null, null, r.link.toString(),
+            new HowToApply(false, r.link.toString(), ''), moment(r.pubDate, 'ddd, DD MMM YYYY hh:mm:ss Z').local().toDate(),
+            r.description ? r.description.toString() : '', './assets/images/so-icon.png', ResultTypes.stackOverflow, '',  'https://stackoverflow.com/jobs');
+      }
+      
+    search(searchText: string) {
+         
+        return this.httpClient.request('GET', this.baseUrl + searchText, { responseType: 'text'})
+            .pipe(flatMap(res => from(this.xml2jsonService.getJSON(res, searchText, this.toJob))));
+            //.pipe(map(res => {
+              //   return from(this.xml2jsonService.getJSON(res, searchText, this.toJob));
+//                }));
+                    
+            
+   // return this.httpClient.get<any>(this.baseUrl,{ observe: 'response', responseType: 'text' }).pipe(tap(res => {
+       /* const Link  = this.parse_link_header(res.headers.get('Link'));
+        this.first  = Link["first"];
+        this.last   = Link["last"];
+        this.prev   = Link["prev"];
+        this.next   = Link["next"];       */
+   //   })); 
+
+    //headers = headers.set('Accept', 'application/javascript');
+        //const options = { headers };
+        /*return this.httpClient.get<any>(this.baseUrl + searchText)
             .pipe(map((res: any) => {
                 console.log('**HMMM : ' + JSON.stringify(res.text()));
             }));
+
+            */
         //    .subscribe(res => {
            //     console.log('StackOverflow Results: ' + JSON.stringify(res));
           //  });
