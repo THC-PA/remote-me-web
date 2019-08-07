@@ -11,7 +11,7 @@
  
 
 <input matInput type="text" placeholder="Search Text" [(ngModel)]="searchText" />
-<button (click)="search(); searchPanelOpenState=searchPanelOpenState?false:true;" mat-button
+<button (click)="search();" mat-button
   color="primary">Search</button>
 
 <mat-accordion style="margin-top: 10px; margin-bottom: 10px;"  
@@ -29,6 +29,7 @@
               </div>
           
         </div>
+        
           
       </mat-panel-title>
      <!-- <mat-panel-description [ngStyle.xs]="{ display: 'none' }" fxLayoutAlign="left center">

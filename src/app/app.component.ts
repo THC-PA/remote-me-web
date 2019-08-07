@@ -13,8 +13,7 @@ import { Job } from './models/job.model';
 export class AppComponent {
   title = 'remote-me-web';
   jobs$: Observable<Job[]>;
-  searchText: string = '';
-
+  searchText: string = ''; 
   constructor(private stackoverflowService: StackOverflowService, private gitHubService: GitHubService) {}
 
   search() {  
