@@ -34,7 +34,7 @@ export class Job {
             this.url = url;
             this.how_to_apply = how_to_apply;
             this.created_at = created_at;
-            this.description = description;
+            this.description = description; 
             this.result_logo = result_logo;
             this.resultType = resultType;
             this.tags = tags;

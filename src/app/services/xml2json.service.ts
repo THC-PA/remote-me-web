@@ -31,9 +31,7 @@ cleanValue(val){
                     resolve([]);
                   }
                   
-                  console.log('***xml2json.service -- begin filter');
                   let filteredResults = context.filterService.filter(result.rss.channel[0].item.map(mapper), searchText);
-                  console.log('***xml2json.service -- after filter, returnin results: ' + JSON.stringify(filteredResults));
                   resolve(filteredResults);
                 }else{
                     reject(err);

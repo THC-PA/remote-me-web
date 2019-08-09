@@ -3,36 +3,33 @@
   <h1>
     Remote Me
   </h1>
-  </div> 
-  <br/>
- 
-    total: {{ (jobs$ | async)?.length || 0 }}
+</div>
+<br />
 
- 
+<!--
+total: {{ (jobs$ | async)?.length || 0 }}-->
+TOTAL: {{ soJobs.length + ghJobs.length || 0}}
 
 <input matInput type="text" placeholder="Search Text" [(ngModel)]="searchText" />
-<button (click)="search();" mat-button
-  color="primary">Search</button>
+<button (click)="search();" mat-button color="primary">Search</button>
 
-<mat-accordion style="margin-top: 10px; margin-bottom: 10px;"  
- *ngFor="let job of jobs$ | async">
-    
+<mat-accordion style="margin-top: 10px; margin-bottom: 10px;" *ngFor="let job of soJobs">
+
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title>        
+      <mat-panel-title>
         <div fxLayoutAlign="center center" fxLayout="row">
-            <img style="width: auto; height: 50px; top: 0;left: 0;"
-             [src]="'assets/images/so-icon.png'" /> 
-          
-              <div [ngStyle.xs]="{'font-size': '12px'}">
-                  {{ job.title }}
-              </div>
-          
+          <img style="width: auto; height: 50px; top: 0;left: 0;" [src]="job.result_logo" />
+
+          <div [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.title }}
+          </div>
+
         </div>
-        
-          
+
+
       </mat-panel-title>
-     <!-- <mat-panel-description [ngStyle.xs]="{ display: 'none' }" fxLayoutAlign="left center">
+      <!-- <mat-panel-description [ngStyle.xs]="{ display: 'none' }" fxLayoutAlign="left center">
         some info here
       </mat-panel-description> -->
     </mat-expansion-panel-header>
@@ -42,9 +39,107 @@
   </mat-expansion-panel>
 </mat-accordion>
 
+
+<mat-accordion style="margin-top: 10px; margin-bottom: 10px;" *ngFor="let job of ghJobs">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div fxLayoutAlign="center center" fxLayout="row">
+          <img style="width: auto; height: 50px; top: 0;left: 0;" [src]="'assets/images/GitHub-Mark-32px.png'" />
+
+          <div [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.title }}
+          </div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card style="background-color: lightgray;">
+      <div [ngStyle.xs]="{'font-size': '12px'}" [innerHTML]="job.description"></div>
+    </mat-card>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<mat-accordion style="margin-top: 10px; margin-bottom: 10px;" *ngFor="let job of roJobs">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div fxLayoutAlign="center center" fxLayout="row">
+          <img style="width: auto; height: 50px; top: 0;left: 0;" [src]="'assets/images/remoteok.png'" />
+
+          <div [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.title }}
+          </div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card style="background-color: lightgray;">
+      <div [ngStyle.xs]="{'font-size': '12px'}" [innerHTML]="job.description"></div>
+    </mat-card>
+  </mat-expansion-panel>
+</mat-accordion>
+
+
+<mat-accordion style="margin-top: 10px; margin-bottom: 10px;" *ngFor="let job of ajJobs">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div fxLayoutAlign="center center" fxLayout="row">
+          <img style="width: auto; height: 50px; top: 0;left: 0;" [src]="'assets/images/authenticjobs.png'" />
+
+          <div [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.title }}
+          </div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card style="background-color: lightgray;">
+      <div [ngStyle.xs]="{'font-size': '12px'}" [innerHTML]="job.description"></div>
+    </mat-card>
+  </mat-expansion-panel>
+</mat-accordion>
+
+
+<mat-accordion style="margin-top: 10px; margin-bottom: 10px;" *ngFor="let job of jpJobs">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div fxLayoutAlign="center center" fxLayout="row">
+          <img style="width: auto; height: 50px; top: 0;left: 0;" [src]="'assets/images/jobspresso-icon.png'" />
+
+          <div [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.title }}
+          </div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card style="background-color: lightgray;">
+      <div [ngStyle.xs]="{'font-size': '12px'}" [innerHTML]="job.description"></div>
+    </mat-card>
+  </mat-expansion-panel>
+</mat-accordion>
+
+
+<mat-accordion style="margin-top: 10px; margin-bottom: 10px;" *ngFor="let job of indeedJobs">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div fxLayoutAlign="center center" fxLayout="row">
+          <img style="width: auto; height: 50px; top: 0;left: 0;" [src]="'assets/images/indeed.png'" />
+
+          <div [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.title }}
+          </div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card style="background-color: lightgray;">
+      <div [ngStyle.xs]="{'font-size': '12px'}" [innerHTML]="job.description"></div>
+    </mat-card>
+  </mat-expansion-panel>
+</mat-accordion>
+<!--
 <div *ngIf="(jobs$ | async)?.length==0">No records found.</div>
-
-
+-->
 
 
 <router-outlet></router-outlet>

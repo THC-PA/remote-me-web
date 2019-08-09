@@ -12,6 +12,10 @@ import { Xml2JsonService } from './services/xml2json.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatInputModule, MatTableModule, MatPaginatorModule, MatSortModule, MatButtonModule, MatCheckboxModule, MatCardModule, MatIconModule, MatDialogModule, MatGridListModule, MatToolbarModule, MatSelectModule, MatExpansionModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RemoteOkService } from './services/remoteok.service';
+import { AuthenticJobsService } from './services/authenticjobs.service';
+import { JobspressoService } from './services/jobspresso.service';
+import { IndeedService } from './services/indeed.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +43,17 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FlexLayoutModule
     
   ],
-  providers: [StackOverflowService, GitHubService, FilterService, Xml2JsonService],
+  providers: [
+    StackOverflowService, 
+    RemoteOkService,
+    GitHubService,
+    FilterService,
+    GitHubService,
+    Xml2JsonService,
+    AuthenticJobsService,
+    JobspressoService,
+    IndeedService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
