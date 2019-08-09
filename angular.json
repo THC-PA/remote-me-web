@@ -113,8 +113,13 @@
               "devServerTarget": "remote-me-web:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "remote-me-web"
 }
