@@ -7,31 +7,55 @@
 <br />
 
 <!--
-total: {{ (jobs$ | async)?.length || 0 }}-->
-TOTAL: {{ soJobs.length + ghJobs.length || 0}}
+total: {{ (jobs$ | async)?.length || 0 }}
+TOTAL: {{ soJobs.length + ghJobs.length || 0}}-->
 
 <input matInput type="text" placeholder="Search Text" [(ngModel)]="searchText" />
 <button (click)="search();" mat-button color="primary">Search</button>
 
+<div *ngIf="hasSearched === true">
+  <div *ngFor="let obs of allObs$">
+    <mat-accordion style="margin-top: 10px; margin-bottom: 10px;" *ngFor="let job of obs | async">
+  
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div [ngStyle.xs]="{'font-size': '12px'}" fxLayoutAlign="center center" fxLayout="row">
+              <img style="width: auto; height: 30px; top: 0;left: 0;" [src]="job.result_logo" />
+              <h4 *ngIf="job.company">
+                {{ job.company }}
+              </h4>
+              <p>{{job.title}}</p>
+              <p>Posted: {{job.created_at}}</p>
+            </div>
+          </mat-panel-title>
+          <!-- <mat-panel-description [ngStyle.xs]="{ display: 'none' }" fxLayoutAlign="left center">
+            some info here
+          </mat-panel-description> -->
+        </mat-expansion-panel-header>
+        <mat-card style="background-color: lightgray;">
+          <div [ngStyle.xs]="{'font-size': '12px'}" [innerHTML]="job.description"></div>
+        </mat-card>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+</div>
+
+<!--
 <mat-accordion style="margin-top: 10px; margin-bottom: 10px;" *ngFor="let job of soJobs">
 
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <div fxLayoutAlign="center center" fxLayout="row">
+        <div [ngStyle.xs]="{'font-size': '12px'}" fxLayoutAlign="center center" fxLayout="row">
           <img style="width: auto; height: 30px; top: 0;left: 0;" [src]="job.result_logo" />
-
-          <div [ngStyle.xs]="{'font-size': '12px'}">
-            {{ job.title }}
-          </div>
-
+          <h4 *ngIf="job.company">
+            {{ job.company }}
+          </h4>
+          <p>{{job.title}}</p>
+          <p>Posted: {{job.created_at}}</p>
         </div>
-
-
       </mat-panel-title>
-      <!-- <mat-panel-description [ngStyle.xs]="{ display: 'none' }" fxLayoutAlign="left center">
-        some info here
-      </mat-panel-description> -->
     </mat-expansion-panel-header>
     <mat-card style="background-color: lightgray;">
       <div [ngStyle.xs]="{'font-size': '12px'}" [innerHTML]="job.description"></div>
@@ -47,9 +71,11 @@ TOTAL: {{ soJobs.length + ghJobs.length || 0}}
         <div fxLayoutAlign="center center" fxLayout="row">
           <img style="width: auto; height: 30px; top: 0;left: 0;" [src]="'assets/images/GitHub-Mark-32px.png'" />
 
-          <div [ngStyle.xs]="{'font-size': '12px'}">
-            {{ job.title }}
-          </div>
+          <h2 *ngIf="job.company" [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.company }}
+          </h2>
+          <p>{{job.title}}</p>
+          <p>Posted: {{job.created_at}}</p>
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
@@ -66,9 +92,11 @@ TOTAL: {{ soJobs.length + ghJobs.length || 0}}
         <div fxLayoutAlign="center center" fxLayout="row">
           <img style="width: auto; height: 30px; top: 0;left: 0;" [src]="'assets/images/remoteok.png'" />
 
-          <div [ngStyle.xs]="{'font-size': '12px'}">
-            {{ job.title }}
-          </div>
+          <h2 *ngIf="job.company" [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.company }}
+          </h2>
+          <p>{{job.title}}</p>
+          <p>Posted: {{job.created_at}}</p>
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
@@ -81,14 +109,16 @@ TOTAL: {{ soJobs.length + ghJobs.length || 0}}
 
 <mat-accordion style="margin-top: 10px; margin-bottom: 10px;" *ngFor="let job of ajJobs">
   <mat-expansion-panel>
-    <mat-expansion-panel-header>
+    <mat-expansion-panel-header fxLayoutAlign="left left">
       <mat-panel-title>
         <div fxLayoutAlign="center center" fxLayout="row">
-          <img style="width: auto; height: 30px; top: 0;left: 0;" [src]="'assets/images/authenticjobs.png'" />
+          <img style="width: 40px; height: auto; top: 0;left: 0;" [src]="'assets/images/authenticjobs.png'" />
 
-          <div [ngStyle.xs]="{'font-size': '12px'}">
-            {{ job.title }}
-          </div>
+          <h2 *ngIf="job.company" [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.company }}
+          </h2>
+          <p>{{job.title}}</p>
+          <p>Posted: {{job.created_at}}</p>
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
@@ -104,11 +134,13 @@ TOTAL: {{ soJobs.length + ghJobs.length || 0}}
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div fxLayoutAlign="center center" fxLayout="row">
-          <img style="width: auto; height: 50px; top: 0;left: 0;" [src]="'assets/images/jobspresso-icon.png'" />
+          <img style="width: 20px; height: auto; top: 0;left: 0;" [src]="'assets/images/jobspresso-icon.png'" />
 
-          <div [ngStyle.xs]="{'font-size': '12px'}">
-            {{ job.title }}
-          </div>
+          <h2 *ngIf="job.company" [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.company }}
+          </h2>
+          <p>{{job.title}}</p>
+          <p>Posted: {{job.created_at}}</p>
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
@@ -124,11 +156,13 @@ TOTAL: {{ soJobs.length + ghJobs.length || 0}}
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div fxLayoutAlign="center center" fxLayout="row">
-          <img style="width: auto; height: 50px; top: 0;left: 0;" [src]="'assets/images/indeed.png'" />
+          <img style="width: 50px; height: auto; top: 0;left: 0;" [src]="'assets/images/indeed.png'" />
 
-          <div [ngStyle.xs]="{'font-size': '12px'}">
-            {{ job.title }}
-          </div>
+          <h3 *ngIf="job.company" [ngStyle.xs]="{'font-size': '12px'}">
+            {{ job.company }}
+          </h3>
+          <p>{{job.title}}</p>
+          <p>Posted: {{job.created_at}}</p>
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
@@ -137,7 +171,7 @@ TOTAL: {{ soJobs.length + ghJobs.length || 0}}
     </mat-card>
   </mat-expansion-panel>
 </mat-accordion>
-<!--
+
 <div *ngIf="(jobs$ | async)?.length==0">No records found.</div>
 -->
 

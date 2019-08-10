@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StackOverflowService } from './services/stackoverflow.service';
 import { HttpHeaders } from '@angular/common/http';
 import { GitHubService } from './services/github.service';
-import { Observable, merge, forkJoin } from 'rxjs';
+import { Observable, merge, forkJoin, BehaviorSubject } from 'rxjs';
 import { Job } from './models/job.model';
 import { mergeAll, mergeMap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
@@ -15,15 +15,21 @@ import { IndeedService } from './services/indeed.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'remote-me-web';
+  //private _allObs$: BehaviorSubject<Job[]> = new BehaviorSubject([]);
+  //get allObs$(): Observable<Job[]> { return this._allObs$.asObservable() }
+  allObs$: Observable<Job[]>[] = [];
+  hasSearched: boolean = false;
+  //allObs$: Array<Observable<Job[]>> = [];
   //jobs$: any;
+  /*
   soJobs: Job[] = [];
   ghJobs: Job[] = [];
   roJobs: Job[] = [];
   ajJobs: Job[] = [];
   jpJobs: Job[] = [];
-  indeedJobs: Job[] = [];
+  indeedJobs: Job[] = [];*/
 
   searchText: string = 'angular'; 
   constructor(
@@ -32,30 +38,23 @@ export class AppComponent {
      private remoteOkService: RemoteOkService,
      private authenticJobsService: AuthenticJobsService,
      private jobspressoService: JobspressoService,
-     private indeedService: IndeedService) {}
+     private indeedService: IndeedService) {
+
+     
+     }
+
+     ngOnInit() {
+     
+     }
 
   search() {  
-
+    this.hasSearched = true;
     let soJobs$: Observable<Job[]> = this.stackoverflowService.search(this.searchText);
     let ghJobs$: Observable<Job[]> = this.gitHubService.search(this.searchText);
     let roJobs$: Observable<Job[]> = this.remoteOkService.search(this.searchText);
     let ajJobs$: Observable<Job[]> = this.authenticJobsService.search(this.searchText);
     let jpJobs$: Observable<Job[]> = this.jobspressoService.search(this.searchText);
-   // let indeedJobs$: Observable<Job[]> = this.indeedService.search(this.searchText);
 
-    if (this.searchText) {
-      combineLatest(soJobs$, ghJobs$, roJobs$, ajJobs$, jpJobs$)
-        .subscribe(([soJobs, ghJobs, roJobs, ajJobs, jpJobs]) => {
-          this.soJobs = soJobs;
-          this.ghJobs = ghJobs;
-          this.roJobs = roJobs;
-          this.ajJobs = ajJobs;
-          this.jpJobs = jpJobs;
-        });
-
-        //ghJobs$.subscribe(res => console.log('final res: ' + JSON.stringify(res)));
-       
-      
-    }
+    this.allObs$ = [soJobs$, ghJobs$, roJobs$, ajJobs$, jpJobs$]; 
   }
 }

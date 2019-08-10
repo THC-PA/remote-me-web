@@ -28,7 +28,7 @@ export class AuthenticJobsService {
             new HowToApply(false, r.link.toString(), ''),
            new Date(r.pubDate),
             r.description ? r.description.toString() : '',
-             'assets/images/authenticJobs.png',
+             'assets/images/authenticjobs.png',
             ResultTypes.authenticJobs,
              '', 
             'https://authenticjobs.com');
